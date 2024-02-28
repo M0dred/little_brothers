@@ -1,5 +1,7 @@
+import sys
 import time
 import requests
+from tqdm import tqdm
 
 requests.packages.urllib3.disable_warnings()
 
@@ -80,22 +82,24 @@ class GoWitness:
             return None
         
 gowitness = GoWitness()
-print(gowitness.get_list())
-# print(gowitness.get_detail('1'))
-# print(gowitness.get_screenshot('1'))
-# print(gowitness.search('https://example.com'))
-# print(gowitness.take_screenshot('https://example.com'))
 
-# try:
-#     with open('test.txt', 'r') as file:
-#         urls = file.readlines()
-#         for url in urls:
-#             url = url.strip()
-#             print(f'Take screenshot for {url}', gowitness.take_screenshot(url))
-#             time.sleep(1)
-#     print('Done')
-# except Exception as e:
-#     print(e)
+def main(urls_file):
+    try:
+        with open(urls_file, 'r') as f:
+            urls = f.readlines()
+            for url in tqdm(urls):
+                url = url.strip()
+                print(f'Take a screenshot for {url}', gowitness.take_screenshot(url))
+                time.sleep(3)
+        print('Done')
+    except Exception as e:
+        print(e)
+
+if __name__ == '__main__':
+    args = sys.argv
+    if len(args) == 2:
+        urls_file = sys.argv[1]
+        main(urls_file)
 
 '''
 GET /list detail
